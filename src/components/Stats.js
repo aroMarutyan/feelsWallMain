@@ -26,7 +26,7 @@ const Stats = ({ messages }) => {
     breakdownMinFontSize,
     breakdownMaxFontSize
   );
-
+  //Page layout styles. Grid variants for desktop and mobile
   const gridStats = css({
     height: "95vh",
     width: "95vw",
@@ -45,7 +45,7 @@ const Stats = ({ messages }) => {
       },
     },
   });
-
+  // Pie chart grid position
   const pieChartStyle = css({
     variants: {
       variant: {
@@ -69,13 +69,13 @@ const Stats = ({ messages }) => {
     placeSelf: "center",
   });
 
+  // Pie chart measurements
   const margin = {
     top: 50,
     right: 50,
     bottom: 50,
     left: 50,
   };
-
   const width = 2 * outerRadius + margin.left + margin.right;
   const height = 2 * outerRadius + margin.top + margin.bottom;
 
@@ -83,12 +83,19 @@ const Stats = ({ messages }) => {
     drawChart();
   }, [messages]);
 
+  /** Function that removes all children of a parent element
+   * Used to refresh the messages breakdown list
+   * @param  {} parent - parent node
+   */
   const childKiller = (parent) => {
     while (parent.firstChild) {
       parent.firstChild.remove();
     }
   };
 
+  /** Function to retrieve the total count for each emtion and digest the data for the chart
+   * @param  {} messages - Up-to-date messages array retrieved from Firestore
+   */
   const dataRetriever = (messages) => {
     let arr = messages.map((entry) => {
       return entry.emotion;
@@ -104,6 +111,14 @@ const Stats = ({ messages }) => {
   const dataReady = dataRetriever(messages);
 
   const breakdownList = document.getElementById("breakdown-list");
+
+  /** Function to create the breakdown list of peoples feelings
+   * @param  {} arr - emotion count data
+   * @param  {} list - node element that will be populated with the data
+   * First the function checks for any existing content and deletes it
+   * Then it populates the list with the newly fetched data
+   * The data is refreshed every time a new message is added to the database
+   */
   const breakdownListGenerator = (arr, list) => {
     breakdownList !== null && childKiller(breakdownList);
 
@@ -117,6 +132,7 @@ const Stats = ({ messages }) => {
   };
   dataReady && breakdownListGenerator(dataReady, breakdownList);
 
+  // D3.js pie chart
   function drawChart() {
     //reduce method - more elegant solution. Check if you can implement it without too much headache
     // const filteredMessages = messages
@@ -124,11 +140,6 @@ const Stats = ({ messages }) => {
     //     return entry.emotion;
     //   })
     //   .reduce((a, c) => a.set(c, (a.get(c) || 0) + 1), new Map());
-
-    // console.log(filteredMessages.entries());
-    // console.log(filteredMessages);
-
-    //set and filter method - second option if can't get the upper one to output arrays
 
     // Remove the old svg
     d3.select("#pie-container").select("svg").remove();

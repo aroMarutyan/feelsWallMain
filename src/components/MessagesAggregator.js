@@ -2,7 +2,9 @@ import AsyncAnimMsg from "./AsyncAnimMsg";
 import "../styles/messageStyles.css";
 import { css, mobileTest } from "../styles/mediaStyles";
 
+// Container for all the message instances that will appear on screen
 const MessagesAggregator = ({ messages }) => {
+  // Styling for the grid. Depending on screen (mobile or desktop) determines grid layout
   const gridBox = css({
     height: "88vh",
     width: "95vw",
