@@ -15,7 +15,7 @@ const Stats = ({ messages }) => {
   const msgMinFontSize = 1.8;
   const msgMaxFontSize = 4.6;
   const msgFontSize = dynamicFontSize(msgMinFontSize, msgMaxFontSize);
-  //Pie chart dynamic font
+  //Pie chart dynamic font - not necessary anymore
   const chartMinFontSize = 1.3;
   const chartMaxFontSize = 2.2;
   const chartFontSize = dynamicFontSize(chartMinFontSize, chartMaxFontSize);
@@ -59,6 +59,7 @@ const Stats = ({ messages }) => {
   const messagesStyle = css({
     fontSize: `clamp(${msgMinFontSize}rem, ${msgFontSize}rem, ${msgMaxFontSize}rem)`,
     color: "black",
+    letterSpacing: "0.5rem",
   });
 
   const msgBreakdownStyle = css({
@@ -67,6 +68,7 @@ const Stats = ({ messages }) => {
     listStyle: "none",
     // alignSelf: "center",
     placeSelf: "center",
+    letterSpacing: "0.3rem",
   });
 
   // Pie chart measurements
@@ -123,10 +125,17 @@ const Stats = ({ messages }) => {
     breakdownList !== null && childKiller(breakdownList);
 
     arr.forEach((entry) => {
+      // let magicWord = (entry[0].style.color = "red");
       let listItem = document.createElement("li");
+      let emoWord = document.createElement("span");
+      emoWord.innerHTML = entry[0];
       listItem.innerHTML = `${entry[1]} ${
         entry[1] > 1 ? "people are" : "person is"
-      } ${entry[0] === "love" ? "in" : ""} ${entry[0]}`;
+      } ${entry[0] === "love" ? "in" : ""}`;
+
+      emoWord.style.color = colorCoding.get(entry[0]);
+
+      listItem.appendChild(emoWord);
       list.appendChild(listItem);
     });
   };
@@ -173,23 +182,22 @@ const Stats = ({ messages }) => {
       .style("stroke-width", 0);
 
     // Append text labels
-    arc
-      .append("text")
-      // .data(data_ready)
-      .attr("text-anchor", "middle")
-      .attr("alignment-baseline", "middle")
-      .text((d) => d.data[0])
-      .style("fill", "white")
-      .style("text-anchor", "middle")
-      .style(
-        "font-size",
-        `clamp(${chartMinFontSize}rem, ${chartFontSize}rem, ${chartMaxFontSize}rem)`
-      )
-      .attr("transform", function (d) {
-        return `translate(${arcGenerator.centroid(d)})`;
-      });
+    // arc
+    //   .append("text")
+    //   // .data(data_ready)
+    //   .attr("text-anchor", "middle")
+    //   .attr("alignment-baseline", "middle")
+    //   .text((d) => d.data[0])
+    //   .style("fill", "white")
+    //   .style("text-anchor", "middle")
+    //   .style(
+    //     "font-size",
+    //     `clamp(${chartMinFontSize}rem, ${chartFontSize}rem, ${chartMaxFontSize}rem)`
+    //   )
+    //   .attr("transform", function (d) {
+    //     return `translate(${arcGenerator.centroid(d)})`;
+    //   });
   }
-
   return (
     <div className={gridStats({ variant: mobileTest ? "desktop" : "mobile" })}>
       <div

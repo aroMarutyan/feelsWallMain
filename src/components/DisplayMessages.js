@@ -20,6 +20,7 @@ const DisplayMessages = ({ message, isVisible }) => {
     fontSize: `clamp(${minFontSize}rem, ${fontSize}rem, ${maxFontSize}rem)`,
     // position: "absolute",
     transform: `rotate(${rotate}deg)`,
+    letterSpacing: "0.3rem",
   });
   /** Function to assign a random tilt to each message instance
    * @param  {} val - Custom variable to determine the tilt range
